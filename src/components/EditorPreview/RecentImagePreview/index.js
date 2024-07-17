@@ -1,16 +1,19 @@
 import React from "react";
 
-const RecentImagePreview = () => {
+const RecentImagePreview = ({ image, handleGoToRecent }) => {
   return (
-    <div className="border-2 border-solid border-gray-300 rounded p-2 w-64">
-      <figure className="flex justify-center">
+    <div
+      className="cursor-pointer border-2 border-solid border-gray-300 rounded p-2 w-64"
+      onClick={() => handleGoToRecent(image)}
+    >
+      <figure className="flex justify-center overflow-hidden rounded">
         <img
-          src="https://picsum.photos/seed/picsum/250/250"
+          src={image?.urls?.regular}
           alt="Recent edit"
-          className="w-250 h-250 object-cover"
+          className="w-full h-[250px] object-cover transition-transform duration-300 hover:scale-105"
         />
       </figure>
-      <span className="block mt-2 text-center">nature.jpg</span>
+      <span className="block mt-2 text-center">{image?.slug}</span>
     </div>
   );
 };

@@ -2,19 +2,29 @@ import React from "react";
 import Loader from "../../Loader";
 import { CiImageOn } from "react-icons/ci";
 
-const EditImagePreview = ({ status, newImageData, loadNewImage }) => {
+const EditImagePreview = ({
+  canvasRef,
+  status,
+  newImageData,
+  loadNewImage,
+  handleMouseDown,
+  handleMouseMove,
+  handleMouseUp,
+}) => {
   return (
     <div className="w-full border-2 border-solid border-gray-300 rounded p-2 min-h-72 flex items-center justify-center">
       {status === "loading" ? (
         <Loader />
       ) : newImageData?.urls?.regular ? (
-        <figure className="flex items-center justify-center w-full h-full">
-          <img
-            src={newImageData?.urls?.regular}
-            alt=""
-            className="w-full h-full max-w-lg max-h-lg object-contain"
+        <figure className="flex items-center justify-center w-full h-full ">
+          <canvas
+            ref={canvasRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            className="w-full h-full max-w-lg max-h-lg object-contain mx-auto"
             style={{ maxWidth: "400px", maxHeight: "400px" }}
-          />
+          ></canvas>
         </figure>
       ) : (
         <div className="text-center">

@@ -1,4 +1,4 @@
-const ControlPanels = ({ editorControls, handleChange }) => {
+const ControlPanels = ({ editorControls, handleChange, newImageData }) => {
   return (
     <div className="my-10 grid grid-cols-2 gap-4">
       {editorControls?.map((input) => (
@@ -11,20 +11,27 @@ const ControlPanels = ({ editorControls, handleChange }) => {
               {input?.label}
             </label>
             <input
+              disabled={newImageData?.length === 0}
               type="text"
-              className="w-[80px] border border-solid border-gray-300 rounded text-center"
-              value={`${input?.value}%`}
+              className={`w-[80px] border border-solid border-gray-300 rounded text-center ${
+                newImageData?.length === 0 ? "opacity-50" : ""
+              }`}
+              value={`${input?.value}`}
+              onChange={(e) => handleChange(input.id, e.target.value)}
             />
           </div>
           <input
+            disabled={newImageData?.length === 0}
             id="brightness-range"
             type="range"
-            min="-100"
-            max="100"
+            min="0"
+            max="200"
             value={input?.value}
             step={1}
             onChange={(e) => handleChange(input.id, e.target.value)}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+            className={`w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700 ${
+              newImageData?.length === 0 ? "opacity-50" : ""
+            }`}
           />
         </div>
       ))}

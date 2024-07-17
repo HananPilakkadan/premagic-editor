@@ -6,9 +6,19 @@ import {} from "react-icons/ci";
 import Header from "../Header";
 import "./EditorPreview.css";
 import { useEditorPreview } from "./useEditorPreview";
+import { useEditorControls } from "../EditorControls/useEditorControls";
 
 const EditorPreview = () => {
-  const { status, loadNewImage, newImageData } = useEditorPreview();
+  const { status, loadNewImage, newImageData, recentImages, handleGoToRecent } =
+    useEditorPreview();
+  console.log(recentImages);
+  const {
+    canvasRef,
+    downloadImage,
+    handleMouseDown,
+    handleMouseMove,
+    handleMouseUp,
+  } = useEditorControls();
   return (
     <>
       <Header />
@@ -20,8 +30,11 @@ const EditorPreview = () => {
                 <span>{newImageData?.slug ?? "untitled image"}</span>
               </div>
               <div className="flex items-center">
-                <button className="flex items-center border-1 border-solid border-secondary-color py-2 px-10 rounded text-secondary-color  hover:shadow-lg hover:opacity-85 transition duration-300 ease-in-out mr-2">
-                  <CiExport /> <span className="ml-2">Export</span>
+                <button
+                  className="flex items-center border-1 border-solid border-secondary-color py-2 px-10 rounded text-secondary-color  hover:shadow-lg hover:opacity-85 transition duration-300 ease-in-out mr-2"
+                  onClick={downloadImage}
+                >
+                  <CiExport /> <span className="ml-2">Save </span>
                 </button>
                 <button
                   className="flex items-center bg-secondary-color border-2 border-solid border-transparent py-2 px-10 rounded text-white shadow-md hover:shadow-lg hover:opacity-85 transition duration-300 ease-in-out "
@@ -34,17 +47,27 @@ const EditorPreview = () => {
           )}
         </div>
         <EditImagePreview
+          canvasRef={canvasRef}
           status={status}
           newImageData={newImageData}
           loadNewImage={loadNewImage}
+          handleMouseDown={handleMouseDown}
+          handleMouseMove={handleMouseMove}
+          handleMouseUp={handleMouseUp}
         />
-        <div className="py-10">
-          <h5 className="mb-4">Recent Images</h5>
-          <div className="flex items-center justify-start gap-2">
-            <RecentImagePreview />
-            <RecentImagePreview />
+        {recentImages?.length > 0 && (
+          <div className="py-10">
+            <h5 className="mb-4">Recent Images</h5>
+            <div className="flex items-center justify-start gap-2">
+              {recentImages?.map((image) => (
+                <RecentImagePreview
+                  image={image}
+                  handleGoToRecent={handleGoToRecent}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

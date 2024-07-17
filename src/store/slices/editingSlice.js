@@ -11,21 +11,21 @@ const initialState = {
       label: "Brightness",
       type: "range",
       defaultValue: "100",
-      value: "0",
+      value: "100",
     },
     {
-      id: "saturation",
+      id: "saturate",
       label: "Saturation",
       type: "range",
       defaultValue: "100",
-      value: "0",
+      value: "100",
     },
     {
       id: "contrast",
       label: "Contrast",
       type: "range",
       defaultValue: "100",
-      value: "0",
+      value: "100",
     },
     {
       id: "sepia",
@@ -35,13 +35,15 @@ const initialState = {
       value: "0",
     },
     {
-      id: "bw",
+      id: "grayscale",
       label: "Black & White",
       type: "range",
       defaultValue: "100",
       value: "0",
     },
   ],
+  customText: "",
+  newText: { text: "", x: 50, y: 50 },
 };
 
 export const fetchImage = createAsyncThunk(
@@ -71,10 +73,32 @@ const editingSlice = createSlice({
       return initialState;
     },
     recentImageHandler: (state, action) => {
-      const updateRecentImage = [...state.recentImages, action.payload]
-        ?.reverse()
-        ?.slice(-2);
-      state.recentImages = updateRecentImage;
+      if (action.payload?.image.urls) {
+        const updateRecentImage = [...state.recentImages, action.payload]
+          ?.reverse()
+          ?.slice(-2);
+        state.recentImages = updateRecentImage;
+        console.log(updateRecentImage, "helloooooooooo");
+      }
+    },
+
+    addText: (state, action) => {
+      console.log(action.payload);
+      const { text, position } = action.payload;
+      state.newText = { text: text, x: position.x, y: position.y };
+    },
+    updateTextPosition: (state, action) => {
+      const { name, value } = action.payload;
+      state.textPosition = {
+        ...state.textPosition,
+        [name]: parseInt(value, 10),
+      };
+    },
+    takeFromRecent: (state, action) => {
+      state.newImageData = action.payload;
+      state.recentImages = state.recentImages.filter(
+        (image) => image.image.id !== action.payload?.id
+      );
     },
   },
   extraReducers: (builder) => {
@@ -92,7 +116,13 @@ const editingSlice = createSlice({
   },
 });
 
-export const { resetControls, updateFilterValue, recentImageHandler } =
-  editingSlice.actions;
+export const {
+  resetControls,
+  updateFilterValue,
+  recentImageHandler,
+  addText,
+  updateTextPosition,
+  takeFromRecent,
+} = editingSlice.actions;
 
 export default editingSlice.reducer;
