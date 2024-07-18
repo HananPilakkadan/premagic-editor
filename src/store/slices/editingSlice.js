@@ -5,6 +5,7 @@ const initialState = {
   status: "idle",
   newImageData: "",
   recentImages: [],
+  textPosition: { x: 100, y: 100 },
   editorControls: [
     {
       id: "brightness",
@@ -42,8 +43,23 @@ const initialState = {
       value: "0",
     },
   ],
-  customText: "",
-  newText: { text: "", x: 50, y: 50 },
+  editedImage: "",
+  isRecentImage: false,
+  newText: { text: "" },
+  //   currentColor: "black",
+  colors: [
+    { name: "red", colorClass: "bg-red-500", textColor: "text-white" },
+    { name: "green", colorClass: "bg-green-500", textColor: "text-white" },
+    { name: "blue", colorClass: "bg-blue-500", textColor: "text-white" },
+    { name: "yellow", colorClass: "bg-yellow-500", textColor: "text-black" },
+    { name: "white", colorClass: "bg-white", textColor: "text-black" },
+  ],
+  textControl: {
+    text: "",
+    color: "black",
+    fontSize: 80,
+    fontFamily: "Arial",
+  },
 };
 
 export const fetchImage = createAsyncThunk(
@@ -68,37 +84,61 @@ const editingSlice = createSlice({
       state.editorControls = state.editorControls.map((control) =>
         control.id === id ? { ...control, value: newValue } : control
       );
+      const control = state.editorControls.find((ctrl) => ctrl.id === id);
+      if (control) {
+        control.value = newValue;
+      }
     },
-    resetControls: () => {
-      return initialState;
+    resetControls: (state) => {
+      state.editorControls = initialState.editorControls;
     },
     recentImageHandler: (state, action) => {
-      if (action.payload?.image.urls) {
+      if (action.payload?.urls) {
         const updateRecentImage = [...state.recentImages, action.payload]
-          ?.reverse()
-          ?.slice(-2);
+          ?.slice(-2)
+          ?.reverse();
         state.recentImages = updateRecentImage;
-        console.log(updateRecentImage, "helloooooooooo");
+        state.editorControls = initialState.editorControls;
+        state.textControl = initialState.textControl;
       }
     },
 
     addText: (state, action) => {
-      console.log(action.payload);
-      const { text, position } = action.payload;
-      state.newText = { text: text, x: position.x, y: position.y };
+      const { text } = action.payload;
+      state.textControl.text = text;
     },
     updateTextPosition: (state, action) => {
-      const { name, value } = action.payload;
-      state.textPosition = {
-        ...state.textPosition,
-        [name]: parseInt(value, 10),
-      };
+      state.textPosition = action.payload;
     },
     takeFromRecent: (state, action) => {
-      state.newImageData = action.payload;
+      state.isRecentImage = true;
+      const { image, updatedImageData } = action.payload;
+      const updateRecentImage = [...state.recentImages, updatedImageData]
+        ?.reverse()
+        ?.slice(-2);
+      state.recentImages = updateRecentImage;
+      state.newImageData = image;
+      state.editorControls =
+        image.editorControls ?? initialState.editorControls;
+      state.textControl = image.textControl ?? initialState.textControl;
       state.recentImages = state.recentImages.filter(
-        (image) => image.image.id !== action.payload?.id
+        (rcImage) => rcImage.id !== image?.id
       );
+    },
+    handleRecentImageFlag: (state) => {
+      state.isRecentImage = false;
+    },
+    handleColorChange: (state, action) => {
+      state.textControl.color = action.payload;
+    },
+    handleFontSizeChange: (state, action) => {
+      state.textControl.fontSize = action.payload;
+    },
+    handleFamilyChange: (state, action) => {
+      state.textControl.fontFamily = action.payload;
+    },
+    saveEditedImage: (state, action) => {
+      state.editedImage = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -108,6 +148,8 @@ const editingSlice = createSlice({
       })
       .addCase(fetchImage.fulfilled, (state, action) => {
         state.status = "success";
+        state.isRecentImage = false;
+
         state.newImageData = action.payload;
       })
       .addCase(fetchImage.rejected, (state) => {
@@ -123,6 +165,11 @@ export const {
   addText,
   updateTextPosition,
   takeFromRecent,
+  handleRecentImageFlag,
+  handleColorChange,
+  handleFontSizeChange,
+  handleFamilyChange,
+  saveEditedImage,
 } = editingSlice.actions;
 
 export default editingSlice.reducer;

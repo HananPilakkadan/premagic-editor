@@ -9,11 +9,11 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
-  return <>{loading ? <Loading /> : <Editor />}</>;
+  return <>{loading ? <Loading loading={loading} /> : <Editor />}</>;
 }
 
 export default App;

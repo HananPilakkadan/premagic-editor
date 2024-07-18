@@ -3,12 +3,12 @@ import React from "react";
 const RecentImagePreview = ({ image, handleGoToRecent }) => {
   return (
     <div
-      className="cursor-pointer border-2 border-solid border-gray-300 rounded p-2 w-64"
+      className="cursor-pointer border-2 border-solid border-gray-300 rounded p-2 w-64 min-h-[250px]"
       onClick={() => handleGoToRecent(image)}
     >
       <figure className="flex justify-center overflow-hidden rounded">
         <img
-          src={image?.urls?.regular}
+          src={image?.editedImage ?? image.urls.regular}
           alt="Recent edit"
           className="w-full h-[250px] object-cover transition-transform duration-300 hover:scale-105"
         />

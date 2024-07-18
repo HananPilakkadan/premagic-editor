@@ -11,7 +11,6 @@ import { useEditorControls } from "../EditorControls/useEditorControls";
 const EditorPreview = () => {
   const { status, loadNewImage, newImageData, recentImages, handleGoToRecent } =
     useEditorPreview();
-  console.log(recentImages);
   const {
     canvasRef,
     downloadImage,
@@ -59,8 +58,9 @@ const EditorPreview = () => {
           <div className="py-10">
             <h5 className="mb-4">Recent Images</h5>
             <div className="flex items-center justify-start gap-2">
-              {recentImages?.map((image) => (
+              {recentImages?.map((image, i) => (
                 <RecentImagePreview
+                  key={i}
                   image={image}
                   handleGoToRecent={handleGoToRecent}
                 />

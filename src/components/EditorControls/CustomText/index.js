@@ -1,7 +1,20 @@
 import React from "react";
-import { MdTextFields } from "react-icons/md";
+import { MdTextFields, MdDeleteOutline } from "react-icons/md";
+import ColorPicker from "./ColorPicker";
+import FontSizeBar from "./FontSizeBar";
+import FontFamily from "./FontFamily";
 
-const CustomText = ({ text, handleChange, handleAddText, newImageData }) => {
+const CustomText = ({
+  handleChange,
+  newImageData,
+  newText,
+  handleDeleteText,
+  handleColorClick,
+  colors,
+  handleFontSize,
+  handleFontStyle,
+  textControl,
+}) => {
   return (
     <div>
       <h3 className="flex items-center text-lg">
@@ -21,24 +34,40 @@ const CustomText = ({ text, handleChange, handleAddText, newImageData }) => {
           disabled={newImageData?.length === 0}
           id="custom-text"
           type="text"
-          value={text}
+          value={textControl?.text}
           placeholder="Add custom text"
           onChange={handleChange}
           className="w-full py-2 p-2 h-[60px] rounded"
         />
-        <div className="mt-2 flex justify-end">
-          <button
-            disabled={!newImageData || newImageData.length === 0}
-            className={`border border-solid p-2 px-8 rounded transition duration-300 ease-in-out ${
-              !newImageData || newImageData.length === 0
-                ? "bg-gray-200 text-gray-800 pointer-events-none opacity-5"
-                : "hover:bg-gray-200 hover:text-gray-800"
-            }`}
-            onClick={handleAddText}
-          >
-            Add Text
-          </button>
-        </div>
+        {newText?.text && (
+          <div className="flex items-center justify-between border border-solid border-2 border-zinc-200 rounded mt-4 p-2 px-4 text-lg">
+            <span>{newText?.text}</span>
+            <span onClick={handleDeleteText}>
+              <MdDeleteOutline />
+            </span>
+          </div>
+        )}
+
+        {textControl?.text && (
+          <>
+            <ColorPicker
+              textControl={textControl}
+              colors={colors}
+              handleColorClick={handleColorClick}
+            />
+            <div className="flex w-full items-center">
+              <div className="w-1/2 pr-2">
+                <FontSizeBar
+                  textControl={textControl}
+                  handleFontSize={handleFontSize}
+                />
+              </div>
+              <div className="w-1/2 pl-2">
+                <FontFamily handleFontStyle={handleFontStyle} />
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -13,11 +13,19 @@ const EditorControls = () => {
     handleChange,
     handleReset,
     handleInputText,
-    text,
     handleAddText,
+    isRecentImage,
+    textControl,
+    handleDeleteText,
+    handleColorClick,
+    colors,
+    handleFontSize,
+    handleFontStyle,
   } = useEditorControls();
+  console.log(editorControls, "editorControls");
+
   return (
-    <div className="fixed top-0 h-screen right-0 bg-slate-100 w-1/2 py-20 px-10 z-10">
+    <div className="fixed top-0 h-screen right-0 bg-slate-100 w-1/2 py-20 px-10 z-10 overflow-scroll">
       <div className="flex items-center justify-between">
         <h3 className="flex items-center text-lg">
           <GrMagic /> <span className="ml-2"> Filters</span>
@@ -38,12 +46,18 @@ const EditorControls = () => {
         newImageData={newImageData}
         editorControls={editorControls}
         handleChange={handleChange}
+        isRecentImage={isRecentImage}
       />
       <CustomText
         newImageData={newImageData}
-        text={text}
         handleChange={handleInputText}
         handleAddText={handleAddText}
+        handleDeleteText={handleDeleteText}
+        handleColorClick={handleColorClick}
+        colors={colors}
+        textControl={textControl}
+        handleFontSize={handleFontSize}
+        handleFontStyle={handleFontStyle}
       />
     </div>
   );
