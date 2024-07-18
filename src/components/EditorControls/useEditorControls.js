@@ -101,7 +101,7 @@ export const useEditorControls = () => {
     document.body.removeChild(link);
 
     URL.revokeObjectURL(link.href);
-    // return JSON.stringify(filterData, null, 2);
+    toast.success("JSON metadata is downloaded!");
   };
   const handleColorClick = (colorName) => {
     dispatch(handleColorChange(colorName));
@@ -111,10 +111,11 @@ export const useEditorControls = () => {
     const dataUrl = canvas.toDataURL("image/png");
     const a = document.createElement("a");
     a.href = dataUrl;
-    a.download = "edited-image.png";
+    a.download = "premagic-edited-image.png";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+    toast.success("Image downloaded!");
   };
 
   const handleInputText = (event) => {
