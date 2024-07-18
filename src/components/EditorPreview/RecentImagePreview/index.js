@@ -3,7 +3,7 @@ import React from "react";
 const RecentImagePreview = ({ image, handleGoToRecent }) => {
   return (
     <div
-      className="cursor-pointer border-2 border-solid border-gray-300 rounded p-2 w-64 min-h-[250px]"
+      className="cursor-pointer border-2 border-solid border-gray-300 rounded p-2 w-64 h-[350px]"
       onClick={() => handleGoToRecent(image)}
     >
       <figure className="flex justify-center overflow-hidden rounded">

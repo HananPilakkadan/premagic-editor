@@ -16,7 +16,7 @@ const EditImagePreview = ({
       {status === "loading" ? (
         <Loader />
       ) : newImageData?.urls?.regular ? (
-        <figure className="flex items-center justify-center w-full h-full ">
+        <figure className="flex items-center justify-center w-full h-full">
           <canvas
             ref={canvasRef}
             onMouseDown={handleMouseDown}
