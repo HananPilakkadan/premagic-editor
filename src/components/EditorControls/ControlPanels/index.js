@@ -7,7 +7,7 @@ const ControlPanels = ({ editorControls, handleChange, newImageData }) => {
             <div className="flex items-center justify-between">
               <label
                 htmlFor={`${input.id}-range`}
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                className="block mb-2 text-sm font-medium text-gray-900 "
               >
                 {input?.label}
               </label>
