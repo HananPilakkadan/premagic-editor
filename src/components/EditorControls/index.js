@@ -22,7 +22,6 @@ const EditorControls = () => {
     handleFontSize,
     handleFontStyle,
   } = useEditorControls();
-  console.log(editorControls, "editorControls");
 
   return (
     <div className="fixed top-0 h-screen right-0 bg-slate-100 w-1/2 py-20 px-10 z-10 overflow-scroll">

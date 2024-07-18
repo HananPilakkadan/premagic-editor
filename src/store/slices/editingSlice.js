@@ -46,7 +46,6 @@ const initialState = {
   editedImage: "",
   isRecentImage: false,
   newText: { text: "" },
-  //   currentColor: "black",
   colors: [
     { name: "red", colorClass: "bg-red-500", textColor: "text-white" },
     { name: "green", colorClass: "bg-green-500", textColor: "text-white" },

@@ -7,6 +7,7 @@ import Header from "../Header";
 import "./EditorPreview.css";
 import { useEditorPreview } from "./useEditorPreview";
 import { useEditorControls } from "../EditorControls/useEditorControls";
+import { BsFiletypeJson } from "react-icons/bs";
 
 const EditorPreview = () => {
   const { status, loadNewImage, newImageData, recentImages, handleGoToRecent } =
@@ -17,6 +18,7 @@ const EditorPreview = () => {
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
+    getMetadata,
   } = useEditorControls();
   return (
     <>
@@ -25,10 +27,17 @@ const EditorPreview = () => {
         <div className="w-full flex items-center  justify-between py-10">
           {newImageData && (
             <>
-              <div className="border border-solid border-gray-300 py-2 px-10 rounded truncate overflow-hidden whitespace-nowrap text-ellipsis w-[300px]">
+              <div className="border border-solid border-gray-300 py-2 px-10 rounded truncate overflow-hidden whitespace-nowrap text-ellipsis w-[200px]">
                 <span>{newImageData?.slug ?? "untitled image"}</span>
               </div>
               <div className="flex items-center">
+                <button
+                  className="flex items-center border-1 border-solid border-secondary-color py-2 px-10 rounded text-secondary-color  hover:shadow-lg hover:opacity-85 transition duration-300 ease-in-out mx-2"
+                  onClick={getMetadata}
+                >
+                  <BsFiletypeJson />
+                  <span className="ml-2"> JSON</span>
+                </button>
                 <button
                   className="flex items-center border-1 border-solid border-secondary-color py-2 px-10 rounded text-secondary-color  hover:shadow-lg hover:opacity-85 transition duration-300 ease-in-out mr-2"
                   onClick={downloadImage}

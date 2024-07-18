@@ -52,26 +52,21 @@ export const useEditorControls = () => {
         const ctx = canvas?.getContext("2d");
         canvas.width = image.width;
         canvas.height = image.height;
-
         if (editorControls) {
           const filters = editorControls
             .map((control) => `${control.id}(${parseInt(control.value)}%)`)
             .join(" ");
           setFilterData(filters);
         }
-
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // Apply filters and draw the image
         ctx.filter = filterData;
         ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-        // Reset the filter before drawing the text
         ctx.filter = "none";
         if (textControl?.text) {
           drawText(ctx, textPosition.x + 350, textPosition.y + 350);
         }
-
         const dataURL = canvas.toDataURL();
         dispatch(saveEditedImage(dataURL));
       };
@@ -89,7 +84,24 @@ export const useEditorControls = () => {
   ]);
 
   const getMetadata = () => {
-    return JSON.stringify(filterData, null, 2);
+    const metadata = {
+      filterData,
+      newImageData,
+    };
+    const metadataJson = JSON.stringify(metadata, null, 2);
+
+    const blob = new Blob([metadataJson], { type: "application/json" });
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "premagic-metadata.json";
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(link.href);
+    // return JSON.stringify(filterData, null, 2);
   };
   const handleColorClick = (colorName) => {
     dispatch(handleColorChange(colorName));
@@ -184,5 +196,6 @@ export const useEditorControls = () => {
     handleFontSize,
     handleFontStyle,
     editedImage,
+    getMetadata,
   };
 };
